@@ -1,0 +1,72 @@
+############################################################
+# cts.tcl - Clock Tree Synthesis (CTS) 脚本 for Innovus
+###########################################################
+
+#20
+setOptMode -usefulSkew true
+setOptMode -usefulSkewCCOpt standard
+setUsefulSkewMode -maxAllowedDelay 0.35
+setOptMode  -effort high \
+            -leakagePowerEffort none \
+            -dynamicPowerEffort none \
+            -reclaimArea true \
+            -simplifyNetlist true \
+            -allEndPoints false \
+            -setupTargetSlack 0 \
+            -holdTargetSlack 0 \
+            -maxDensity 0.5 \
+            -drcMargin 0.5 
+
+setOptMode -fixFanoutLoad true -fixTran true -fixCap true -fixDRC true
+optDesign -preCTS
+
+set_interactive_constraint_modes {Clock_constraint}
+
+set_ccopt_property target_skew 0.35
+set_ccopt_property target_insertion_delay 1.5
+set_ccopt_property max_fanout 12
+set_ccopt_property target_max_trans 0.3
+set_ccopt_property target_max_capacitance 0.5
+# 1. 设置 buffer/inverter cell 库
+set_ccopt_property inverter_cells {
+  HS65_LL_CNIVX10 HS65_LL_CNIVX103 HS65_LL_CNIVX124
+  HS65_LL_CNIVX14 HS65_LL_CNIVX17 HS65_LL_CNIVX21 HS65_LL_CNIVX24
+  HS65_LL_CNIVX27 HS65_LL_CNIVX3 HS65_LL_CNIVX31 HS65_LL_CNIVX34
+  HS65_LL_CNIVX38 HS65_LL_CNIVX41 HS65_LL_CNIVX45 HS65_LL_CNIVX48
+  HS65_LL_CNIVX52 HS65_LL_CNIVX55 HS65_LL_CNIVX58 HS65_LL_CNIVX62
+  HS65_LL_CNIVX7 HS65_LL_CNIVX82
+}
+
+set_ccopt_property buffer_cells {
+  HS65_LL_CNBFX10 HS65_LL_CNBFX103 HS65_LL_CNBFX124 HS65_LL_CNBFX14
+  HS65_LL_CNBFX17 HS65_LL_CNBFX21 HS65_LL_CNBFX24 HS65_LL_CNBFX27
+  HS65_LL_CNBFX31 HS65_LL_CNBFX34 HS65_LL_CNBFX38
+  HS65_LL_CNBFX38_0 HS65_LL_CNBFX38_1 HS65_LL_CNBFX38_2 HS65_LL_CNBFX38_3
+  HS65_LL_CNBFX38_4 HS65_LL_CNBFX38_5 HS65_LL_CNBFX38_6 HS65_LL_CNBFX38_7
+  HS65_LL_CNBFX38_8 HS65_LL_CNBFX38_9 HS65_LL_CNBFX38_10 HS65_LL_CNBFX38_11
+  HS65_LL_CNBFX38_12 HS65_LL_CNBFX38_13 HS65_LL_CNBFX38_14 HS65_LL_CNBFX38_15
+  HS65_LL_CNBFX38_16 HS65_LL_CNBFX38_17 HS65_LL_CNBFX38_18 HS65_LL_CNBFX38_19
+  HS65_LL_CNBFX38_20 HS65_LL_CNBFX38_21 HS65_LL_CNBFX38_22 HS65_LL_CNBFX38_23
+  HS65_LL_CNBFX41 HS65_LL_CNBFX45 HS65_LL_CNBFX48 HS65_LL_CNBFX52
+  HS65_LL_CNBFX55 HS65_LL_CNBFX58 HS65_LL_CNBFX62 HS65_LL_CNBFX82
+}
+
+# 2. 设置 Hold Fixing Cells
+setOptMode -holdFixingCells { HS65_LL_BFX106 HS65_LL_BFX13 HS65_LL_BFX142 HS65_LL_BFX18 HS65_LL_BFX2 HS65_LL_BFX213 HS65_LL_BFX22 HS65_LL_BFX27 HS65_LL_BFX284 HS65_LL_BFX31 HS65_LL_BFX35 HS65_LL_BFX4 HS65_LL_BFX40 HS65_LL_BFX44 HS65_LL_BFX49 HS65_LL_BFX53 HS65_LL_BFX62 HS65_LL_BFX7 HS65_LL_BFX71 HS65_LL_BFX9 HS65_LL_BFX106 HS65_LL_BFX13 HS65_LL_BFX142 HS65_LL_BFX18 HS65_LL_BFX2 HS65_LL_BFX213 HS65_LL_BFX22 HS65_LL_BFX27 HS65_LL_BFX284 HS65_LL_BFX31 HS65_LL_BFX35 HS65_LL_BFX4 HS65_LL_BFX40 HS65_LL_BFX44 HS65_LL_BFX49 HS65_LL_BFX53 HS65_LL_BFX62 HS65_LL_BFX7 HS65_LL_BFX71 HS65_LL_BFX9 HS65_LL_BFX106 HS65_LL_BFX13 HS65_LL_BFX142 HS65_LL_BFX18 HS65_LL_BFX2 HS65_LL_BFX213 HS65_LL_BFX22 HS65_LL_BFX27 HS65_LL_BFX284 HS65_LL_BFX31 HS65_LL_BFX35 HS65_LL_BFX4 HS65_LL_BFX40 HS65_LL_BFX44 HS65_LL_BFX49 HS65_LL_BFX53 HS65_LL_BFX62 HS65_LL_BFX7 HS65_LL_BFX71 HS65_LL_BFX9 HS65_LL_BFX106 HS65_LL_BFX13 HS65_LL_BFX142 HS65_LL_BFX18 HS65_LL_BFX2 HS65_LL_BFX213 HS65_LL_BFX22 HS65_LL_BFX27 HS65_LL_BFX284 HS65_LL_BFX31 HS65_LL_BFX35 HS65_LL_BFX4 HS65_LL_BFX40 HS65_LL_BFX44 HS65_LL_BFX49 HS65_LL_BFX53 HS65_LL_BFX62 HS65_LL_BFX7 HS65_LL_BFX71 HS65_LL_BFX9  }
+
+# 可选：查看当前设置
+#getOptMode -holdFixingCells
+
+# 5. 生成时钟树 spec 文件
+create_ccopt_clock_tree_spec -file ./ccopt.spec
+source ./ccopt.spec
+
+# 4. 检查时钟树收敛性
+#check_ccopt_clock_tree_convergence
+
+#20
+
+# 6. 检查 ILM 和并执行时钟树综合
+#ccopt_check_and_flatten_ilms_no_restore
+ccopt_design
+
