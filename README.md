@@ -3,7 +3,7 @@
 A compact collection of EDA automation scripts and modified RTL used for coursework/labs.  
 **Grade3 (G3)** = baseline level; **Grade5 (G5)** = advanced level with CNN peripherial.
 
-## Directory Structure
+## 📂 Directory Structure
 
 | Folder           | Purpose / Tools                               | Notes |
 |------------------|-----------------------------------------------|-------|
@@ -14,24 +14,24 @@ A compact collection of EDA automation scripts and modified RTL used for coursew
 | `synthesis_1`    | **Synthesis** Tcl scripts — *G3*               | Baseline Genus setup, clocks/constraints. |
 | `synthesis_cnn`  | **Synthesis** Tcl scripts — *G5*               | CNN-focused synthesis with additional switches and parsing. |
 
-> **Script language:** Tcl (primary). Some utilities may call Python for report parsing.
+> 🗣️ **Script language:** Tcl (primary). 
 
-## Quick Start
+## ⚡ Quick Start
 
 > Replace tool invocations/paths to match your environment. Example only.
 
 ```tcl
 # --- Synthesis (Genus or Design Compiler) ---
 # Baseline
-source ./synthesis_1/synt.tcl
+source ./synthesis_1/scripts/synt.tcl
 # CNN variant
-source ./synthesis_cnn/synt_cnn.tcl
+source ./synthesis_cnn/scripts/synt.tcl
 
 # --- Place & Route (Innovus or ICC2) ---
 # Baseline
-source ./PNR/run_pnr.tcl
+source ./PNR/tcl_pnr/run.tcl
 # CNN variant
-source ./PNR_CNN/run_pnr_cnn.tcl
+source ./PNR_CNN/tcl_pnr/0_run.tcl
 
 # --- PrimeTime Power ---
-source ./Primetime/run_power.tcl
+source ./Primetime/set_up.tcl
